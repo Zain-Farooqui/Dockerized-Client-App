@@ -1,0 +1,15 @@
+version: '3'
+services:
+  client:
+    build: .
+    container_name: python_client
+    depends_on:
+      - backend  # Wait until the backend is up
+    environment:
+      - BACKEND_URL=http://backend:8000/generate  # Point to the backend service
+    volumes:
+      - /clientvol:/clientdata  # Bind mount: Host /clientvol to container /clientdata
+    command: ["python", "client_app.py"]
+    stdin_open: true  # Keep STDIN open to attach terminal
+    tty: true  # Allocate a pseudo-TTY
+    restart: "no"
